@@ -74,16 +74,20 @@ router.post('/search', authenticate, async (req: AuthRequest, res: Response) => 
     if (startDate || endDate) {
       filter.date = {};
       if (startDate) {
-        // Parse startDate and set to beginning of day (00:00:00.000)
-        const start = new Date(startDate);
-        start.setHours(0, 0, 0, 0);
+        // Parse ISO date string and set to beginning of day (00:00:00.000)
+        // Handle both "2026-03-01" and "2026-03-01T00:00:00.000Z" formats
+        const startDateStr = startDate.includes('T') ? startDate.split('T')[0] : startDate;
+        const start = new Date(startDateStr + 'T00:00:00.000Z');
         filter.date.$gte = start;
+        console.log('[Backend] Start date filter:', { input: startDate, parsed: start });
       }
       if (endDate) {
-        // Parse endDate and set to end of day (23:59:59.999)
-        const end = new Date(endDate);
-        end.setHours(23, 59, 59, 999);
+        // Parse ISO date string and set to end of day (23:59:59.999)
+        // Handle both "2026-03-01" and "2026-03-01T23:59:59.999Z" formats
+        const endDateStr = endDate.includes('T') ? endDate.split('T')[0] : endDate;
+        const end = new Date(endDateStr + 'T23:59:59.999Z');
         filter.date.$lte = end;
+        console.log('[Backend] End date filter:', { input: endDate, parsed: end });
       }
     }
 
