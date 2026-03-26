@@ -1,0 +1,62 @@
+{
+  "source": "visitspacecoast.com",
+  "last_updated": "2026-02-22",
+  "launches": [
+    {
+      "date": "2026-02-24",
+      "time": "15:56",
+      "timezone": "America/New_York",
+      "mission": "Falcon 9 Block 5 | Starlink Group 6-110",
+      "status": "Go",
+      "description": "A batch of 29 Starlink satellites"
+    },
+    {
+      "date": "2026-02-27",
+      "time": "04:52",
+      "timezone": "America/New_York",
+      "mission": "Falcon 9 Block 5 | Starlink Group 6-108",
+      "status": "Go",
+      "description": "A batch of 29 Starlink satellites"
+    },
+    {
+      "date": "2026-03-01",
+      "time": "19:07",
+      "timezone": "America/New_York",
+      "mission": "Falcon 9 Block 5 | Starlink Group 10-41",
+      "status": "Go",
+      "description": "A batch of 29 Starlink satellites"
+    },
+    {
+      "date": "2026-03-07",
+      "time": "19:00",
+      "timezone": "America/New_York",
+      "mission": "Falcon 9 Block 5 | EchoStar 25",
+      "status": "TBD",
+      "description": "Direct broadcast satellite for DISH/EchoStar"
+    },
+    {
+      "date": "2026-03-30",
+      "time": "20:00",
+      "timezone": "America/New_York",
+      "mission": "Vulcan | GPS III SV10",
+      "status": "TBD",
+      "description": "Tenth GPS III mission"
+    },
+    {
+      "date": "2026-03-30",
+      "time": "20:00",
+      "timezone": "America/New_York",
+      "mission": "New Glenn | BlueBird Block 2 #2",
+      "status": "TBD",
+      "description": "AST SpaceMobile BlueBird Block 2 satellites for cellular broadband coverage"
+    },
+    {
+      "date": "2026-04-01",
+      "time": "18:24",
+      "timezone": "America/New_York",
+      "mission": "SLS Block 1 | Artemis II",
+      "status": "TBC",
+      "description": "First crewed Artemis mission — 4 astronauts around the Moon"
+    }
+  ]
+}

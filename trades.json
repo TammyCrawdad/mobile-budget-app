@@ -1,0 +1,12 @@
+[
+  {
+    "ticker": "APLD",
+    "type": "call",
+    "contracts": 3,
+    "strike": 29,
+    "expiry": "2026-04-17",
+    "opened": "2026-03-10",
+    "thesis": "Short squeeze setup (31.25% short float) + AI data center catalyst (Babcock & Wilcox 1.2GW deal) + bullish options flow. Found via mid-cap scanner.",
+    "status": "open"
+  }
+]
