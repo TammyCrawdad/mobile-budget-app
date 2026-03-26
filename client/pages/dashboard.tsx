@@ -1,12 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import MobileBudgetView from '../components/MobileBudgetView';
+import DesktopBudgetView from '../components/DesktopBudgetView';
 import { authAPI } from '../lib/api';
 
 export default function Dashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('transactions');
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -38,8 +52,21 @@ export default function Dashboard() {
     );
   }
 
+  if (!mounted) {
+    return null;
+  }
+
+  if (isMobile) {
+    return (
+      <MobileBudgetView
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+    );
+  }
+
   return (
-    <MobileBudgetView
+    <DesktopBudgetView
       activeTab={activeTab}
       onTabChange={setActiveTab}
     />

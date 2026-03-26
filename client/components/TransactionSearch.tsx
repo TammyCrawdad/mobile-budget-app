@@ -103,65 +103,65 @@ export default function TransactionSearch({ onSearch }: TransactionSearchProps) 
   };
 
   return (
-    <div className="w-full h-full flex flex-col p-4">
+    <div className="w-full h-full flex flex-col gap-6">
       {/* Search Form - Primary Focus */}
-      <div className="bg-gradient-to-br from-gray-900 to-slate-900 rounded-lg border border-indigo-500/20 p-6 mb-6 sticky top-0 z-20">
+      <div className="bg-gradient-to-br from-gray-900 to-slate-900 rounded-lg border border-indigo-500/20 p-6 sticky top-0 z-20">
         <h2 className="text-2xl font-bold text-slate-100 mb-6">
           Search Transactions
         </h2>
 
         <form onSubmit={handleSearch} className="space-y-4">
-          {/* Search Input */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Search by name or description
-            </label>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Enter transaction name or description..."
-              className="w-full px-4 py-2 bg-gray-800 border border-indigo-500/30 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-            />
+          {/* First Row: Search + Category + Type */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Search by name or description
+              </label>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Enter transaction name or description..."
+                className="w-full px-4 py-2 bg-gray-800 border border-indigo-500/30 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Category
+              </label>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-800 border border-indigo-500/30 rounded-lg text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+              >
+                <option value="">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Type
+              </label>
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-800 border border-indigo-500/30 rounded-lg text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+              >
+                <option value="all">All Types</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
           </div>
 
-          {/* Category Filter */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Category
-            </label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-indigo-500/30 rounded-lg text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-            >
-              <option value="">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Type Filter */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Type
-            </label>
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-indigo-500/30 rounded-lg text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-            >
-              <option value="all">All Types</option>
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-          </div>
-
-          {/* Date Range */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Second Row: Date Range */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Start Date
@@ -186,8 +186,8 @@ export default function TransactionSearch({ onSearch }: TransactionSearchProps) 
             </div>
           </div>
 
-          {/* Amount Range */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Third Row: Amount Range */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Min Amount
@@ -242,7 +242,7 @@ export default function TransactionSearch({ onSearch }: TransactionSearchProps) 
       </div>
 
       {/* Results */}
-      <div className="space-y-3 flex-1 overflow-y-auto">
+      <div className="space-y-3 flex-1 overflow-y-auto px-4">
         {transactions.length > 0 && (
           <h3 className="text-lg font-semibold text-slate-100">
             Results ({transactions.length})
