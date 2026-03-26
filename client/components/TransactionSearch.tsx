@@ -52,22 +52,29 @@ export default function TransactionSearch({ onSearch }: TransactionSearchProps) 
   }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
+    console.log('[Frontend] handleSearch called');
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      const params: SearchParams = {
-        searchTerm: searchTerm || undefined,
-        categoryId: selectedCategory || undefined,
-        type: selectedType !== 'all' ? selectedType : undefined,
-        startDate: startDate || undefined,
-        endDate: endDate || undefined,
-        minAmount: minAmount ? parseFloat(minAmount) : undefined,
-        maxAmount: maxAmount ? parseFloat(maxAmount) : undefined,
-      };
+      console.log('[Frontend] Building search params...');
+      // Build params object, only including non-empty values
+      const params: any = {};
+      if (searchTerm && searchTerm.trim()) params.searchTerm = searchTerm;
+      if (selectedCategory) params.categoryId = selectedCategory;
+      if (selectedType !== 'all') params.type = selectedType;
+      if (startDate) params.startDate = startDate;
+      if (endDate) params.endDate = endDate;
+      if (minAmount) params.minAmount = parseFloat(minAmount);
+      if (maxAmount) params.maxAmount = parseFloat(maxAmount);
 
+      console.log('[Frontend] Search params:', params);
       const response = await transactionAPI.search(params);
+      console.log('[Frontend] Search response:', response);
+      console.log('[Frontend] Response data:', response.data);
+      console.log('[Frontend] Transactions to set:', response.data.data);
+      
       setTransactions(response.data.data);
       if (onSearch) {
         onSearch(response.data.data);

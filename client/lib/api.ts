@@ -33,9 +33,19 @@ export interface SearchParams {
   maxAmount?: number;
 }
 
+// Helper to remove undefined values from params
+function cleanParams(params: any): SearchParams {
+  return Object.fromEntries(
+    Object.entries(params).filter(([_, v]) => v !== undefined)
+  );
+}
+
 export const transactionAPI = {
-  search: (params: SearchParams) =>
-    api.post('/api/transactions/search', params),
+  search: (params: SearchParams) => {
+    const cleanedParams = cleanParams(params);
+    console.log('[API] Calling search with params:', cleanedParams);
+    return api.post('/api/transactions/search', cleanedParams);
+  },
   getAll: () => api.get('/api/transactions'),
   create: (data: any) => api.post('/api/transactions', data),
   getCategories: () => api.get('/api/transactions/categories'),

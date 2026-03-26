@@ -6,9 +6,33 @@ import { Response } from 'express';
 
 const router = Router();
 
+// Get categories - MUST come before generic GET /
+router.get('/categories', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const categories = await Category.find({ userId }).sort({ name: 1 }).lean();
+
+    return res.json({
+      success: true,
+      data: categories,
+    });
+  } catch (error) {
+    console.error('Categories fetch error:', error);
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
 // Search transactions endpoint
 router.post('/search', authenticate, async (req: AuthRequest, res: Response) => {
   try {
+    console.log('[Backend] Search endpoint hit with request body:', req.body);
     const {
       searchTerm,
       categoryId,
@@ -20,6 +44,7 @@ router.post('/search', authenticate, async (req: AuthRequest, res: Response) => 
     } = req.body;
 
     const userId = req.userId;
+    console.log('[Backend] User ID:', userId);
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -49,9 +74,13 @@ router.post('/search', authenticate, async (req: AuthRequest, res: Response) => 
     if (startDate || endDate) {
       filter.date = {};
       if (startDate) {
-        filter.date.$gte = new Date(startDate);
+        // Parse startDate and set to beginning of day (00:00:00.000)
+        const start = new Date(startDate);
+        start.setHours(0, 0, 0, 0);
+        filter.date.$gte = start;
       }
       if (endDate) {
+        // Parse endDate and set to end of day (23:59:59.999)
         const end = new Date(endDate);
         end.setHours(23, 59, 59, 999);
         filter.date.$lte = end;
@@ -70,17 +99,28 @@ router.post('/search', authenticate, async (req: AuthRequest, res: Response) => 
     }
 
     // Execute query with population and sorting
+    console.log('[Backend] Search filter:', JSON.stringify(filter, null, 2));
     const transactions = await Transaction.find(filter)
       .populate('category', 'name color type')
       .sort({ date: -1 })
       .limit(100)
       .lean();
 
-    return res.json({
+    console.log('[Backend] Found transactions:', transactions.length);
+    console.log('[Backend] First transaction sample:', transactions[0] || 'No transactions');
+    console.log('[Backend] Returning response');
+    const responseData = {
       success: true,
       count: transactions.length,
       data: transactions,
-    });
+    };
+    console.log('[Backend] Response data structure:', JSON.stringify({
+      success: responseData.success,
+      count: responseData.count,
+      dataIsArray: Array.isArray(responseData.data),
+      dataLength: responseData.data?.length || 0,
+    }));
+    return res.json(responseData);
   } catch (error) {
     console.error('Search error:', error);
     return res.status(500).json({
@@ -153,29 +193,6 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
     });
   } catch (error) {
     console.error('Create error:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    });
-  }
-});
-
-// Get categories
-router.get('/categories', authenticate, async (req: AuthRequest, res: Response) => {
-  try {
-    const userId = req.userId;
-    if (!userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    const categories = await Category.find({ userId }).sort({ name: 1 }).lean();
-
-    return res.json({
-      success: true,
-      data: categories,
-    });
-  } catch (error) {
-    console.error('Categories fetch error:', error);
     return res.status(500).json({
       error: 'Internal server error',
       message: error instanceof Error ? error.message : 'Unknown error',
