@@ -6,7 +6,7 @@ import { authAPI } from '../lib/api';
 
 export default function Dashboard() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('transactions');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
