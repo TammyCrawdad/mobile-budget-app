@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TransactionSearch from './TransactionSearch';
 
 interface Transaction {
@@ -25,8 +25,6 @@ export default function MobileBudgetView({
   activeTab,
   onTabChange,
 }: MobileBudgetViewProps) {
-  const [searchResults, setSearchResults] = useState<Transaction[]>([]);
-
   return (
     <div className="w-full h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 flex flex-col">
       {/* Header */}
@@ -104,7 +102,9 @@ export default function MobileBudgetView({
         )}
 
         {activeTab === 'transactions' && (
-          <TransactionSearch onSearch={setSearchResults} />
+          <div className="w-full">
+            <TransactionSearch />
+          </div>
         )}
 
         {activeTab === 'categories' && (
